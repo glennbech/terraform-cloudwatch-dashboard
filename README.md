@@ -49,12 +49,12 @@ terraform --version
 Se i katalogen "infra" - her finner dere filen *dashboard.tf* som inneholder Terraformkode for et CloudWatch Dashboard.
 
 * Som dere ser beskrives dashboardet i et JSON-format. Her finner dere dokumentasjon https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/CloudWatch-Dashboard-Body-Structure.html
-* Her ser dere også hvordan man ofte inkluderer tekst eller kode ved hjelp av  "Heredoc" syntaks i Terraformkode, slik at vi ikke trenger å tenke på "newline", "Escaping" av spesialtegn osv (https://developer.hashicorp.com/terraform/language/expressions/strings)
+* Her ser dere også hvordan man ofte inkluderer tekst eller kode ved hjelp av  "Heredoc" syntaks i Terraformkode, slik at vi ikke trenger å tenke på "newline", "Escaping" av spesialtegn osv (https://developer.hashicorp.com/terraform/language/expressions/strings) ```LUKE_I_AM_YOUR_FATHER``` kan erstattes med hva du selv måtte ønske
 
 ```hcl
 resource "aws_cloudwatch_dashboard" "main" {
   dashboard_name = var.student_name
-  dashboard_body = <<DASHBOARD
+  dashboard_body = <<LUKE_I_AM_YOUR_FATHER
 {
   "widgets": [
     {
@@ -78,7 +78,7 @@ resource "aws_cloudwatch_dashboard" "main" {
     }
   ]
 }
-DASHBOARD
+LUKE_I_AM_YOUR_FATHER
 }
 ```
 ## TODO 
@@ -103,12 +103,12 @@ Denne lager en Ny metric - av typen Gauge, som hele tiden rapporterer hvor mange
 
 ## Endre MetricConfig klasse
 
-Du må endre på klassen *MetricsConfig* og bruke ditt egent studentnavn istedet for *glennbech* i kodeblokken 
+Du må endre på klassen *MetricsConfig* og bruke ditt egent studentnavn for cloudwatch.namespace i kodeblokken 
 
 ````java
  return new CloudWatchConfig() {
         private Map<String, String> configuration = Map.of(
-                "cloudwatch.namespace", "glennbech",
+                "cloudwatch.namespace", "",
                 "cloudwatch.step", Duration.ofSeconds(5).toString());
         
         ....
@@ -141,8 +141,8 @@ Koden i dette repoet eksponerer et REST grensesnitt på http://localhost:8080/ac
 curl --location --request POST 'http://localhost:8080/account' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "id": 1,
-    "balance" : "100000"
+    "id": 2,
+    "balance" : "10"
 }'|jq
 ```
 
@@ -155,7 +155,7 @@ curl --location --request POST 'http://localhost:8080/account' \
 * Overføre penger fra en konto til en annen
 
 ```sh
-curl --location --request POST 'http://localhost:8080/account/2/transfer/3' \
+curl --location --request POST 'http://localhost:8080/account/1/transfer/2' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "fromCountry": "SE",
@@ -165,13 +165,21 @@ curl --location --request POST 'http://localhost:8080/account/2/transfer/3' \
 '|jq
 ```
 
-## Sjekk at det kommer data i CloudWatch- Dashbordet 
+## Sjekk CloudWatch Metrics
+
+* Går til AWS UI, og tjenesten CloudWatch. Velg "Metrics".
+* Velg "All Metrics"
+* Se under "Custom namespaces", du skal finne ditt studentnavn der
+* Baser på hvilke endepuntkter du har testet (transfer, balance osv) - så vil det være ulike metrikker her.
+* Logback, og Java VM har også laget Metrics for deg.
+
+## Sjekk CloudWatch- Dashbords 
+
+* Gå til AWS UI, og tjenesten CloudWatch. Velg "Dashboards".
+* Søk på ditt eget studentnavn 
+* Se at du får målepunkter på grafen, det kan være noe forsinkelse 
 
 Det skal se omtrent slik ut 
-
-* Går til AWS UI, og tjenesten CloudWatch. Velg "Dashboards".
-* Søk på ditt eget studentnavn og åpne dashboardet du lagde
-* Se at du får målepunkter på grafen
 
 ![Alt text](img/dashboard.png  "a title")
 
@@ -179,9 +187,8 @@ Det skal se omtrent slik ut
 ## Oppgaver
 
 * Legg til fler Metrics i koden og Dashboardet ditt
-* Kan du lage et nytt endepunkt med ny funksjonalitet? 
 * Kan du lage en Gauge som returnerer hvor mye penger som totalt er i banken?
-* Kan du lage en GitHub Actions pipeline for terraformkoden / Javakoden? 
+* Kan du lage en GitHub Actions pipeline for terraformkoden / Javakoden?  (NB! Det er fokus med neste lab)
 * Bruk gjerne følgende guide som inspirasjon https://www.baeldung.com/micrometer
 * Referanseimplementasjon; https://micrometer.io/docs/concepts
 
