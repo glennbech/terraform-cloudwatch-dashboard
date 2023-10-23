@@ -135,7 +135,7 @@ curl --location --request POST 'http://localhost:8080/account/1/transfer/2' \
 Se i katalogen "infra" - her finner dere filen *dashboard.tf* som inneholder Terraformkode for et CloudWatch Dashboard.
 
 * Som dere ser beskrives dashboardet i et JSON-format. Her finner dere dokumentasjon https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/CloudWatch-Dashboard-Body-Structure.html
-* Her ser dere også hvordan man ofte inkluderer tekst eller kode ved hjelp av  "Heredoc" syntaks i Terraformkode, slik at vi ikke trenger å tenke på "newline", "Escaping" av spesialtegn osv (https://developer.hashicorp.com/terraform/language/expressions/strings) ```LUKE_I_AM_YOUR_FATHER``` kan erstattes med hva du selv måtte ønske
+* Her ser dere også hvordan man ofte inkluderer tekst eller kode ved hjelp av  "Heredoc" syntaks i Terraformkode, slik at vi ikke trenger å tenke på "newline", "Escaping" av spesialtegn osv (https://developer.hashicorp.com/terraform/language/expressions/strings) ```LUKE_I_AM_YOUR_FATHER``` kan erstattes med hva du selv måtte ønske
 
 ```hcl
 resource "aws_cloudwatch_dashboard" "main" {
