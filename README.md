@@ -42,51 +42,6 @@ terraform --version
 ```
 
 
-## Bruk Terraform til å lage et CloudWatch DashBoard 
-
-* Klon dette repoet til Cloud9 miljøet ditt. 
-
-Se i katalogen "infra" - her finner dere filen *dashboard.tf* som inneholder Terraformkode for et CloudWatch Dashboard.
-
-* Som dere ser beskrives dashboardet i et JSON-format. Her finner dere dokumentasjon https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/CloudWatch-Dashboard-Body-Structure.html
-* Her ser dere også hvordan man ofte inkluderer tekst eller kode ved hjelp av  "Heredoc" syntaks i Terraformkode, slik at vi ikke trenger å tenke på "newline", "Escaping" av spesialtegn osv (https://developer.hashicorp.com/terraform/language/expressions/strings) ```LUKE_I_AM_YOUR_FATHER``` kan erstattes med hva du selv måtte ønske
-
-```hcl
-resource "aws_cloudwatch_dashboard" "main" {
-  dashboard_name = var.student_name
-  dashboard_body = <<LUKE_I_AM_YOUR_FATHER
-{
-  "widgets": [
-    {
-      "type": "metric",
-      "x": 0,
-      "y": 0,
-      "width": 12,
-      "height": 6,
-      "properties": {
-        "metrics": [
-          [
-            "${var.student_name}",
-            "account_count.value"
-          ]
-        ],
-        "period": 300,
-        "stat": "Maximum",
-        "region": "eu-west-1",
-        "title": "Total number of accounts"
-      }
-    }
-  ]
-}
-LUKE_I_AM_YOUR_FATHER
-}
-```
-## TODO 
-
-Skriv en *provider.tf* i samme katalog som dashboard.tf - og kjør terraform plan / apply fra Cloud 9 miljøet ditt
-Se at Det blir opprettet et Dashboard
-
-* Kjør Terraform  init / plan / apply from Cloud9-miljøet ditt
 
 ## Se på Spring Boot appen 
 
@@ -172,6 +127,52 @@ curl --location --request POST 'http://localhost:8080/account/1/transfer/2' \
 * Se under "Custom namespaces", du skal finne ditt studentnavn der
 * Baser på hvilke endepuntkter du har testet (transfer, balance osv) - så vil det være ulike metrikker her.
 * Logback, og Java VM har også laget Metrics for deg.
+
+## Bruk Terraform til å lage et CloudWatch DashBoard 
+
+* Klon dette repoet til Cloud9 miljøet ditt. 
+
+Se i katalogen "infra" - her finner dere filen *dashboard.tf* som inneholder Terraformkode for et CloudWatch Dashboard.
+
+* Som dere ser beskrives dashboardet i et JSON-format. Her finner dere dokumentasjon https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/CloudWatch-Dashboard-Body-Structure.html
+* Her ser dere også hvordan man ofte inkluderer tekst eller kode ved hjelp av  "Heredoc" syntaks i Terraformkode, slik at vi ikke trenger å tenke på "newline", "Escaping" av spesialtegn osv (https://developer.hashicorp.com/terraform/language/expressions/strings) ```LUKE_I_AM_YOUR_FATHER``` kan erstattes med hva du selv måtte ønske
+
+```hcl
+resource "aws_cloudwatch_dashboard" "main" {
+  dashboard_name = var.student_name
+  dashboard_body = <<LUKE_I_AM_YOUR_FATHER
+{
+  "widgets": [
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 0,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          [
+            "${var.student_name}",
+            "account_count.value"
+          ]
+        ],
+        "period": 300,
+        "stat": "Maximum",
+        "region": "eu-west-1",
+        "title": "Total number of accounts"
+      }
+    }
+  ]
+}
+LUKE_I_AM_YOUR_FATHER
+}
+```
+## TODO 
+
+Skriv en *provider.tf* i samme katalog som dashboard.tf - og kjør terraform plan / apply fra Cloud 9 miljøet ditt
+Se at Det blir opprettet et Dashboard
+
+* Kjør Terraform  init / plan / apply from Cloud9-miljøet ditt
 
 ## Sjekk CloudWatch- Dashbords 
 
